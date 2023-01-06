@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+
+<title>Music Player</title>
+
+<meta charset="utf-8">
+
+<style>
+.big1{font-size: 100px; font-family: 'ヒラギノ丸ゴ ProN','Hiragino Maru Gothic ProN','Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3','Meiryo UI',sans-serif;
+}
+
+</style>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+      function onYouTubeIframeAPIReady() {
+        onButtonClick();
+      }
+
+      function onButtonClick() {
+        var videoId = document.getElementById('videoId').value;
+        var parent = document.getElementById('player_wrapper');
+        parent.innerHTML = '<div id="player"></div>';
+        var player;
+        player = new YT.Player('player', {
+          videoId: videoId,
+          width: 640,
+          height: 390,
+          events: {
+            'onReady': onPlayerReady,
+          }
+        });
+      }
+
+      function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+    </script>
+  </head>
+
+  <body>
+    <form class="big1">
+      <label>ここにIDを入力<input class="big1" type="text" id="videoId" value=""></label>
+      <button class="big1" type="button" onclick="onButtonClick()">反映する</button>
+    </form>
+
+    <div id="player_wrapper">
+        <div id="player"></div>
+    </div>
+  </body>
+</html>
