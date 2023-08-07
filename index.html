@@ -1,55 +1,106 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
 
-<title>YouTube見るやつ</title>
-<meta charset="utf-8">
+<head>
+    <title>Youtube Player</title>
+    <meta charset="utf-8">
+    <style>
+        html,
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+        }
 
-<!--アイコン-->
-<link rel="icon" type="image/jpeg" href="https://media.discordapp.net/attachments/929992251327787012/1060752184138010634/IMG_0936.jpg">
-<link rel="apple-touch-icon" sizes="180x180" href="https://media.discordapp.net/attachments/929992251327787012/1060752184138010634/IMG_0936.jpg">
-
-<style>
-.big1{font-size: 100px; font-family: 'ヒラギノ丸ゴ ProN','Hiragino Maru Gothic ProN','Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3','Meiryo UI',sans-serif;
-}
-
-</style>
-
+        .header {
+            background: #2a2a2a;
+            border-top: solid 2px #000;
+            border-bottom: solid 2px #000;
+            display: flex;
+            padding: 10px 20px;
+            position: fixed;
+            z-index: 1;
+            justify-content: space-between;
+            width: 100%;
+        }
+    </style>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-      function onYouTubeIframeAPIReady() {
-        onButtonClick();
-      }
-
-      function onButtonClick() {
-        var videoId = document.getElementById('videoId').value;
-        var parent = document.getElementById('player_wrapper');
-        parent.innerHTML = '<div id="player"></div>';
-        var player;
-        player = new YT.Player('player', {
-          videoId: videoId,
-          width: 640,
-          height: 390,
-          events: {
-            'onReady': onPlayerReady,
-          }
-        });
-      }
-
-      function onPlayerReady(event) {
-        event.target.playVideo();
-      }
+        function onYouTubeIframeAPIReady() {
+            onButtonClick();
+        }
+        function onButtonClick() {
+            var selectRes = document.getElementById("resolution");
+            var wid = 640;
+            var hei = 360;
+            switch (selectRes.value) {
+                case "1080p":
+                    wid = 1920;
+                    hei = 1080;
+                    break;
+                case "720p":
+                    wid = 1280;
+                    hei = 720;
+                    break;
+                case "480p":
+                    wid = 854;
+                    hei = 480;
+                    break;
+                case "360p":
+                    wid = 640;
+                    hei = 360;
+                    break;
+                case "240p":
+                    wid = 426;
+                    hei = 240;
+                    break;
+                default:
+                    alert("エラー");
+                    break;
+            }
+            var videoId = document.getElementById("videoId").value;
+            var parent = document.getElementById("player_wrapper");
+            parent.innerHTML = "<div id='player'></div>";
+            var player;
+            player = new YT.Player('player', {
+                videoId: videoId,
+                width: wid,
+                height: hei,
+                events: {
+                    'onReady': onPlayerReady,
+                }
+            });
+        }
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
     </script>
-  </head>
+</head>
 
-  <body>
-    <form class="big1">
-      <label>ここにIDを入力<input class="big1" type="text" id="videoId" value=""></label>
-      <button class="big1" type="button" onclick="onButtonClick()">反映する</button>
-    </form>
-
+<body>
+    <header class="header">
+        <nav>
+            <form>
+                <div>
+                    <label for="resolution">動画のサイズ</label>
+                    <select id="resolution">
+                        <option value="1080p">1080p</option>
+                        <option value="720p">720p</option>
+                        <option value="480p">480p</option>
+                        <option value="360p" selected>360p</option>
+                        <option value="240p">240p</option>
+                    </select>
+                </div>
+                <label>ID部分のみ入力<input type="text" id="videoId" value=""></label>
+                <button type="button" onclick="onButtonClick()">セット</button>
+            </form>
+        </nav>
+    </header>
+    <p><br><br><br><br></p>
     <div id="player_wrapper">
         <div id="player"></div>
     </div>
-  </body>
+</body>
+
 </html>
